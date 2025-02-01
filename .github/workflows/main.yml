@@ -28,7 +28,7 @@ jobs:
         PORT: 10000
       run: |
         code-server --port $PORT --disable-telemetry --auth none &
-    
+
     - name: Delay before creating tunnel
       run: sleep 10
 
@@ -36,6 +36,11 @@ jobs:
       env:
         PORT: 10000
       run: |
-        while true; do
-          ./cloudflared tunnel --url http://127.0.0.1:$PORT --metrics localhost:45678
-        done
+        # Start the tunnel in the background
+        ./cloudflared tunnel --url http://127.0.0.1:$PORT --metrics localhost:45678 &
+        
+        # Wait for the tunnel to establish
+        sleep 5
+        
+        # Keep the job running indefinitely
+        wait
