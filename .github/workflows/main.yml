@@ -44,4 +44,3 @@ jobs:
         
         # Keep the job running indefinitely
         wait
-
